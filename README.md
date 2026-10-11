@@ -356,6 +356,10 @@ These screenshots were captured from the local services and client commands desc
 
 REST was quicker to inspect manually because its contract is expressed through familiar HTTP methods, JSON bodies, and status codes. gRPC required a `.proto` contract and generated modules, which added a build step but produced strongly structured request and response types. REST timeout handling appeared as a client-library exception that the Order Service translated to HTTP 504, while gRPC exposed the standardized `DEADLINE_EXCEEDED` status directly. The gRPC implementation also provided precise protocol statuses such as `FAILED_PRECONDITION`, whereas the REST implementation represented the same condition with HTTP 409 and a JSON body. For this small lab REST involved less setup, but gRPC offered a clearer machine-readable contract for service-to-service communication.
 
+## Implementation reflection
+
+I implemented the REST interaction first and then reused the same inventory rules for the gRPC version. The most challenging part was testing a timeout and a deadline while confirming that the Order Service continued running after each failure. I verified both implementations locally with `curl` and recorded the successful and failure-handling results in the `evidence` folder.
+
 ## Status mapping
 
 | Condition | REST Inventory response | gRPC Inventory status | Order state |
