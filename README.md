@@ -20,6 +20,8 @@ The HTTP endpoint on each Order Service is the client-facing entry point. The pr
 .
 ├── README.md
 ├── demo.py
+├── evidence
+│   └── README.md
 ├── generate_grpc.py
 ├── requirements.txt
 ├── rest
@@ -301,6 +303,29 @@ gRPC Order Service after deadline: HTTP 200
 
 This output proves that the timeout and deadline are handled without terminating either Order Service.
 
+## Screenshot evidence
+
+Terminal screenshots can be stored in the [`evidence`](evidence/) directory. Capture the entire Terminal window so that the command, HTTP status, response body, and shell prompt are visible. Do not include passwords, API keys, tokens, or other credentials.
+
+Use these filenames:
+
+| Screenshot | Required evidence |
+|---|---|
+| `evidence/01-rest-success.png` | REST request returns `HTTP 201` and `order_status: accepted` |
+| `evidence/02-rest-timeout-health.png` | Slow REST request returns `HTTP 504`, followed by `/health` returning `HTTP 200` |
+| `evidence/03-grpc-success.png` | gRPC-backed request returns `HTTP 201` and `order_status: accepted` |
+| `evidence/04-grpc-deadline-health.png` | Slow gRPC call shows `DEADLINE_EXCEEDED`/`HTTP 504`, followed by `/health` returning `HTTP 200` |
+
+After adding the four PNG files, uncomment the image lines below by removing `<!--` and `-->` around each line.
+
+<!-- ![Successful REST request](evidence/01-rest-success.png) -->
+
+<!-- ![REST timeout and Order Service health check](evidence/02-rest-timeout-health.png) -->
+
+<!-- ![Successful gRPC-backed request](evidence/03-grpc-success.png) -->
+
+<!-- ![gRPC deadline exceeded and Order Service health check](evidence/04-grpc-deadline-health.png) -->
+
 ## REST and gRPC comparison
 
 REST was quicker to inspect manually because its contract is expressed through familiar HTTP methods, JSON bodies, and status codes. gRPC required a `.proto` contract and generated modules, which added a build step but produced strongly structured request and response types. REST timeout handling appeared as a client-library exception that the Order Service translated to HTTP 504, while gRPC exposed the standardized `DEADLINE_EXCEEDED` status directly. The gRPC implementation also provided precise protocol statuses such as `FAILED_PRECONDITION`, whereas the REST implementation represented the same condition with HTTP 409 and a JSON body. For this small lab REST involved less setup, but gRPC offered a clearer machine-readable contract for service-to-service communication.
@@ -314,4 +339,3 @@ REST was quicker to inspect manually because its contract is expressed through f
 | Quantity unavailable | `409 Conflict` | `FAILED_PRECONDITION` | `rejected` |
 | Inventory responds too slowly | Order returns `504 Gateway Timeout` | `DEADLINE_EXCEEDED`; Order returns `504` | `pending` |
 | Inventory cannot be reached | Order returns `503 Service Unavailable` | `UNAVAILABLE`; Order returns `503` | `pending` |
-
