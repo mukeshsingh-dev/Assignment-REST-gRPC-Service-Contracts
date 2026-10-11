@@ -316,15 +316,23 @@ Use these filenames:
 | `evidence/03-grpc-success.png` | gRPC-backed request returns `HTTP 201` and `order_status: accepted` |
 | `evidence/04-grpc-deadline-health.png` | Slow gRPC call shows `DEADLINE_EXCEEDED`/`HTTP 504`, followed by `/health` returning `HTTP 200` |
 
-After adding the four PNG files, uncomment the image lines below by removing `<!--` and `-->` around each line.
+The following screenshots were generated from a verified `python demo.py` run:
 
-<!-- ![Successful REST request](evidence/01-rest-success.png) -->
+### REST success
 
-<!-- ![REST timeout and Order Service health check](evidence/02-rest-timeout-health.png) -->
+![Successful REST request](evidence/01-rest-success.png)
 
-<!-- ![Successful gRPC-backed request](evidence/03-grpc-success.png) -->
+### REST timeout and recovery
 
-<!-- ![gRPC deadline exceeded and Order Service health check](evidence/04-grpc-deadline-health.png) -->
+![REST timeout and Order Service health check](evidence/02-rest-timeout-health.png)
+
+### gRPC success
+
+![Successful gRPC-backed request](evidence/03-grpc-success.png)
+
+### gRPC deadline and recovery
+
+![gRPC deadline exceeded and Order Service health check](evidence/04-grpc-deadline-health.png)
 
 ## REST and gRPC comparison
 
