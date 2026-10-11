@@ -319,6 +319,8 @@ The repository contains the following locally captured evidence:
 | `evidence/06-grpc-success.png` | gRPC-backed request returns `HTTP 201` and `order_status: accepted` |
 | `evidence/07-grpc-deadline.png` | Slow gRPC call returns `HTTP 504` with `DEADLINE_EXCEEDED` |
 | `evidence/08-grpc-health-after-deadline.png` | gRPC-backed Order Service remains running and `/health` returns `HTTP 200` |
+| `evidence/09-rest-unavailable.png` | REST unavailable quantity returns `HTTP 409` and `order_status: rejected` |
+| `evidence/10-grpc-unavailable.png` | gRPC unavailable quantity returns `HTTP 409`, `FAILED_PRECONDITION`, and `order_status: rejected` |
 
 These screenshots were captured from the local services and client commands described above.
 
@@ -332,6 +334,10 @@ These screenshots were captured from the local services and client commands desc
 
 ![Successful REST request](evidence/03-rest-success.png)
 
+### REST unavailable inventory
+
+![REST unavailable quantity response](evidence/09-rest-unavailable.png)
+
 ### REST timeout
 
 ![REST timeout handled cleanly](evidence/04-rest-timeout.png)
@@ -343,6 +349,10 @@ These screenshots were captured from the local services and client commands desc
 ### gRPC success
 
 ![Successful gRPC-backed request](evidence/06-grpc-success.png)
+
+### gRPC unavailable inventory
+
+![gRPC FAILED PRECONDITION response](evidence/10-grpc-unavailable.png)
 
 ### gRPC deadline exceeded
 
