@@ -307,32 +307,50 @@ This output proves that the timeout and deadline are handled without terminating
 
 Terminal screenshots can be stored in the [`evidence`](evidence/) directory. Capture the entire Terminal window so that the command, HTTP status, response body, and shell prompt are visible. Do not include passwords, API keys, tokens, or other credentials.
 
-Use these filenames:
+The repository contains the following locally captured evidence:
 
 | Screenshot | Required evidence |
 |---|---|
-| `evidence/01-rest-success.png` | REST request returns `HTTP 201` and `order_status: accepted` |
-| `evidence/02-rest-timeout-health.png` | Slow REST request returns `HTTP 504`, followed by `/health` returning `HTTP 200` |
-| `evidence/03-grpc-success.png` | gRPC-backed request returns `HTTP 201` and `order_status: accepted` |
-| `evidence/04-grpc-deadline-health.png` | Slow gRPC call shows `DEADLINE_EXCEEDED`/`HTTP 504`, followed by `/health` returning `HTTP 200` |
+| `evidence/01-rest-inventory-service.png` | REST Inventory Service running on port `5001` |
+| `evidence/02-rest-order-service.png` | REST Order Service running on port `5000` with a one-second timeout |
+| `evidence/03-rest-success.png` | REST request returns `HTTP 201` and `order_status: accepted` |
+| `evidence/04-rest-timeout.png` | Slow REST request returns `HTTP 504` with `inventory_timeout` |
+| `evidence/05-rest-health-after-timeout.png` | REST Order Service remains running and `/health` returns `HTTP 200` |
+| `evidence/06-grpc-success.png` | gRPC-backed request returns `HTTP 201` and `order_status: accepted` |
+| `evidence/07-grpc-deadline.png` | Slow gRPC call returns `HTTP 504` with `DEADLINE_EXCEEDED` |
+| `evidence/08-grpc-health-after-deadline.png` | gRPC-backed Order Service remains running and `/health` returns `HTTP 200` |
 
-The following screenshots were generated from a verified `python demo.py` run:
+These screenshots were captured from the local services and client commands described above.
+
+### REST services running
+
+![REST Inventory Service running](evidence/01-rest-inventory-service.png)
+
+![REST Order Service running](evidence/02-rest-order-service.png)
 
 ### REST success
 
-![Successful REST request](evidence/01-rest-success.png)
+![Successful REST request](evidence/03-rest-success.png)
 
-### REST timeout and recovery
+### REST timeout
 
-![REST timeout and Order Service health check](evidence/02-rest-timeout-health.png)
+![REST timeout handled cleanly](evidence/04-rest-timeout.png)
+
+### REST Order Service remains running
+
+![REST Order Service health check after timeout](evidence/05-rest-health-after-timeout.png)
 
 ### gRPC success
 
-![Successful gRPC-backed request](evidence/03-grpc-success.png)
+![Successful gRPC-backed request](evidence/06-grpc-success.png)
 
-### gRPC deadline and recovery
+### gRPC deadline exceeded
 
-![gRPC deadline exceeded and Order Service health check](evidence/04-grpc-deadline-health.png)
+![gRPC deadline handled cleanly](evidence/07-grpc-deadline.png)
+
+### gRPC-backed Order Service remains running
+
+![gRPC-backed Order Service health check after deadline](evidence/08-grpc-health-after-deadline.png)
 
 ## REST and gRPC comparison
 
